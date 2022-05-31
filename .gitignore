@@ -1,3 +1,5 @@
 .vscode/
 *.o
 *.txt
+*.gch
+a.out
