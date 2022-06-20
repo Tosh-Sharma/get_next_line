@@ -3,19 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsharma <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 12:48:58 by tsharma           #+#    #+#             */
-/*   Updated: 2022/06/20 18:29:46 by tsharma          ###   ########.fr       */
+/*   Updated: 2022/06/20 18:43:34 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdlib.h>
-#include <unistd.h>
-
-#include <fcntl.h>
-#include <stdio.h>
 
 int	init(void)
 {
@@ -24,34 +19,14 @@ int	init(void)
 	return (count);
 }
 
-char	*ft_strchr(const char *s, int c)
-{
-	int		i;
-	char	*res;
-
-	i = 0;
-	while (s[i] != '\0')
-	{
-		if (s[i] == (char)c)
-		{
-			res = (char *)&s[i];
-			return (res);
-		}
-		i++;
-	}
-	if (s[i] == (char)c)
-	{
-		res = (char *)&s[i];
-		return (res);
-	}
-	return (NULL);
-}
-
 void	send_line(t_list **list)
 {
 }
 
-void	break_line
+void	break_line(char *line, char *extra, char *buff)
+{
+	// Code to separate the lines.
+}
 
 void	traverse_file(int fd, t_list **list)
 {
@@ -84,22 +59,4 @@ void	get_next_line(int fd)
 	if (init() == 1)
 		traverse_file(fd, list);
 	send_line(list);
-}
-
-int	main(void)
-{
-	int		fd;
-	char	*res;
-
-	fd = open("test.txt", O_RDONLY);
-	if (fd != -1)
-	{
-		get_next_line(fd);
-		get_next_line(fd);
-		get_next_line(fd);
-		get_next_line(fd);
-		get_next_line(fd);
-		get_next_line(fd);
-	}
-	close(fd);
 }
