@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 15:41:56 by tsharma           #+#    #+#             */
-/*   Updated: 2022/06/20 18:43:09 by tsharma          ###   ########.fr       */
+/*   Updated: 2022/06/21 17:50:37 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,11 @@
 
 #include <stdlib.h>
 #include <unistd.h>
-#include <stdio.h>
 
-typedef struct	s_list
-{
-	char			*content;
-	struct s_list	*next;
-}	t_list;
-
-void	get_next_line(int fd);
-void	ft_lstadd_back(t_list **lst, t_list *new);
-t_list	*ft_lstnew(void *content);
-
+char	*get_next_line(int fd);
+int		*ft_strchr(const char *s, int c);
+char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strdup(char *src);
+size_t	ft_strlen(const char *s);
 
 #endif
