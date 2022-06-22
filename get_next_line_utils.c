@@ -6,13 +6,13 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 18:39:49 by tsharma           #+#    #+#             */
-/*   Updated: 2022/06/21 17:49:38 by tsharma          ###   ########.fr       */
+/*   Updated: 2022/06/22 15:19:11 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int	*ft_strchr(const char *s, int c)
+int	ft_strchr(const char *s, int c)
 {
 	int		i;
 	char	*res;
