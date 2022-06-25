@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 12:48:58 by tsharma           #+#    #+#             */
-/*   Updated: 2022/06/23 14:00:58 by tsharma          ###   ########.fr       */
+/*   Updated: 2022/06/25 18:30:28 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@ char	*append_line(char *buffer, char *line, char *extra)
 {
 	char	*new_line;
 
+	printf("extra in append_line is %s\n", extra);
 	if (extra != NULL)
+// Might need to replace code with below line instead of above.
+//	if (extra[0] != '\0')
 	{
 		new_line = ft_strjoin(extra, line);
 		// free(extra);
@@ -25,7 +28,10 @@ char	*append_line(char *buffer, char *line, char *extra)
 		// the output is NULL or what?
 //		printf("Extra in append_line is %s\n", extra);
 	}
+	printf("Buffer read is %s\n", buffer);
 	if (buffer != NULL)
+// 	Might need to replace this line as well.
+//	if (buffer[0] != '\0')
 		new_line = ft_strjoin(line, buffer);
 	return (new_line);
 }
@@ -54,7 +60,6 @@ char	*break_line(char *buffer, char *line, char *extra, int position)
 		iter++;
 	}
 	extra[iter] = '\0';
-//	printf("Extra is %s\n-------\n", extra);
 	return (new_line);
 }
 
@@ -98,7 +103,7 @@ char	*get_next_line(int fd)
 		{
 			line = break_extra(extra, ft_strchr(extra, '\n'));
 			return (line);
-		}
+		}	
 		read_count = read(fd, buffer, BUFFER_SIZE + 1);
 //		printf("Buffer read %s \n--------------------\n", buffer);
 		position = ft_strchr(buffer, '\n');
