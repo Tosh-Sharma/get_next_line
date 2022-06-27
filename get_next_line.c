@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 12:48:58 by tsharma           #+#    #+#             */
-/*   Updated: 2022/06/25 18:30:28 by tsharma          ###   ########.fr       */
+/*   Updated: 2022/06/27 16:20:58 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,73 +17,84 @@ char	*append_line(char *buffer, char *line, char *extra)
 {
 	char	*new_line;
 
-	printf("extra in append_line is %s\n", extra);
 	if (extra != NULL)
-// Might need to replace code with below line instead of above.
-//	if (extra[0] != '\0')
-	{
 		new_line = ft_strjoin(extra, line);
-		// free(extra);
-		// This printf is to find out if we freed it and
-		// the output is NULL or what?
-//		printf("Extra in append_line is %s\n", extra);
-	}
-	printf("Buffer read is %s\n", buffer);
 	if (buffer != NULL)
-// 	Might need to replace this line as well.
-//	if (buffer[0] != '\0')
 		new_line = ft_strjoin(line, buffer);
 	return (new_line);
 }
 
+char	*cpy_and_erase_src(char *dst, char *src)
+{
+	int		i;
+	int		n;
+
+	i = 0;
+	n = ft_strlen(src);
+	dst = (char *)malloc(sizeof(char) * (n + 1));
+	while (src[i] != '\0')
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	dst[i] = '\0';
+	i = 0;
+	while (i < BUFFER_SIZE)
+	{
+		src[i] = '\0';
+		i++;
+	}
+	return (dst);
+}
+
 char	*break_line(char *buffer, char *line, char *extra, int position)
 {
-	int		iter;
+	int		i;
+	int		j;
 	char	temp[BUFFER_SIZE + 1];
 	char	*new_line;
 
-	iter = 0;
-	while (iter <= position)
+	i = 0;
+	while (i <= position)
 	{
-		temp[iter] = buffer[iter];
-		iter++;
+		temp[i] = buffer[i];
+		i++;
 	}
-	temp[iter] = '\0';
-//	printf("Temp is %s\n--------\n", temp);
-//	printf("Line before join is %s\n------\n", line);
+	temp[i] = '\0';
 	new_line = ft_strjoin(line, temp);
-//	printf("Line after join is %s", new_line);
-	iter = 0;
-	while (iter < BUFFER_SIZE + 1)
+	free(line);
+	j = 0;
+	while (j <= BUFFER_SIZE)
 	{
-		extra[iter] = buffer[position + 1 + iter];
-		iter++;
+		extra[j] = buffer[j + i];
+		j++;
 	}
-	extra[iter] = '\0';
+	extra[j] = '\0';
 	return (new_line);
 }
 
-char	*break_extra(char *extra, int position)
+char	*break_multi_lines(char *line, char *extra, int position)
 {
-	char	*line;
+	char	*new_line;
 	int		i;
 
 	i = 0;
-	line = malloc(sizeof(char) * (ft_strlen(extra) - position));
+	new_line = malloc(sizeof(char) * (ft_strlen(line) - position));
 	while (i <= position)
 	{
-		line[i] = extra[i];
+		new_line[i] = line[i];
 		i++;
 	}
-	line[i] = '\0';
+	new_line[i] = '\0';
 	i = 0;
-	while (i <= ft_strlen(extra - position))
+	while (i <= ft_strlen(line - position))
 	{
-		extra[i] = extra[position + i];
+		extra[i] = line[position + i];
 		i++;
 	}
 	extra[i] = '\0';
-	return (line);
+	free(line);
+	return (new_line);
 }
 
 char	*get_next_line(int fd)
@@ -95,17 +106,16 @@ char	*get_next_line(int fd)
 	int			position;
 
 	buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	read_count = -1;
-	line = 0;
-	while (read_count != 0)
+	line = cpy_and_erase_src(line, extra);
+	while (1)
 	{
-		if (ft_strchr(extra, '\n') != -1)
+		if (ft_strchr(line, '\n') != -1)
 		{
-			line = break_extra(extra, ft_strchr(extra, '\n'));
+			line = break_multi_lines(line, extra, ft_strchr(line, '\n'));
 			return (line);
-		}	
+		}
 		read_count = read(fd, buffer, BUFFER_SIZE + 1);
-//		printf("Buffer read %s \n--------------------\n", buffer);
+		printf("Buffer is \"%s\"\n", buffer);
 		position = ft_strchr(buffer, '\n');
 		if (position != -1)
 		{
