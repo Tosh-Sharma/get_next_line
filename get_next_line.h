@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 15:41:56 by tsharma           #+#    #+#             */
-/*   Updated: 2022/06/22 15:19:29 by tsharma          ###   ########.fr       */
+/*   Updated: 2022/06/29 13:11:20 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,6 @@ char	*get_next_line(int fd);
 int		ft_strchr(const char *s, int c);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strdup(char *src);
-size_t	ft_strlen(const char *s);
+int		ft_strlen(const char *s);
 
 #endif

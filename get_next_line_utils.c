@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 18:39:49 by tsharma           #+#    #+#             */
-/*   Updated: 2022/06/22 15:19:11 by tsharma          ###   ########.fr       */
+/*   Updated: 2022/06/29 13:12:20 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ static char	*joiner(char const *s1, char const *s2)
 {
 	int		total_size;
 	char	*res;
-	size_t	i;
-	size_t	j;
+	int		i;
+	int		j;
 
 	total_size = ft_strlen(s1) + ft_strlen(s2) + 1;
 	res = (char *)malloc(sizeof(char) * total_size);
@@ -94,7 +94,7 @@ char	*ft_strdup(char *src)
 	return (dest);
 }
 
-size_t	ft_strlen(const char *s)
+int	ft_strlen(const char *s)
 {
 	int	i;
 
