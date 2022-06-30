@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 12:48:58 by tsharma           #+#    #+#             */
-/*   Updated: 2022/06/30 10:20:13 by tsharma          ###   ########.fr       */
+/*   Updated: 2022/06/30 10:30:02 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,6 @@ void	*ft_memset(void *b, int c, size_t len)
 		i++;
 	}
 	return (b);
-}
-
-char	*append_line(char *buffer, char *line)
-{
-	char	*new_line;
-
-	new_line = ft_strjoin(line, buffer);
-	free(line);
-	return (new_line);
 }
 
 char	*cpy_and_erase_src(char *src)
@@ -112,6 +103,7 @@ char	*get_next_line(int fd)
 	int			read_count;
 	char		*line;
 	static char	extra[BUFFER_SIZE + 1];
+	char		*new_line;
 
 	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buffer)
@@ -132,7 +124,11 @@ char	*get_next_line(int fd)
 		if (ft_strchr(buffer, '\n') != -1)
 			return (break_line(buffer, line, extra, ft_strchr(buffer, '\n')));
 		else
-			line = append_line(buffer, line);
+		{
+			new_line = ft_strjoin(line, buffer);
+			free(line);
+			line = new_line;
+		}
 	}
 	return (line);
 }

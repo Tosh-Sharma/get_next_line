@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 13:49:20 by toshsharma        #+#    #+#             */
-/*   Updated: 2022/06/30 10:16:11 by tsharma          ###   ########.fr       */
+/*   Updated: 2022/06/30 10:33:00 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,13 @@ int	main(void)
 	fd = open("test.txt", O_RDONLY);
 	if (fd != -1)
 	{
-		// get_next_line(fd);
-		// get_next_line(fd);
-		// get_next_line(fd);
-		// get_next_line(fd);
-		// get_next_line(fd);
-		// get_next_line(fd);
-		// get_next_line(fd);
-
-		printf("Line received is \"%s\"\n",get_next_line(fd));
-		printf("Line received is \"%s\"\n",get_next_line(fd));
-		printf("Line received is \"%s\"\n",get_next_line(fd));
-		printf("Line received is \"%s\"\n",get_next_line(fd));
-		printf("Line received is \"%s\"\n",get_next_line(fd));
-		printf("Line received is \"%s\"\n",get_next_line(fd));
-		printf("Line received is \"%s\"\n",get_next_line(fd));
+		printf("Line received is \"%s\"\n", get_next_line(fd));
+		printf("Line received is \"%s\"\n", get_next_line(fd));
+		printf("Line received is \"%s\"\n", get_next_line(fd));
+		printf("Line received is \"%s\"\n", get_next_line(fd));
+		printf("Line received is \"%s\"\n", get_next_line(fd));
+		printf("Line received is \"%s\"\n", get_next_line(fd));
+		printf("Line received is \"%s\"\n", get_next_line(fd));
 	}
 	close(fd);
 }
