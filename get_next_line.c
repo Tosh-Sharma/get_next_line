@@ -6,12 +6,27 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 12:48:58 by tsharma           #+#    #+#             */
-/*   Updated: 2022/06/29 16:54:57 by tsharma          ###   ########.fr       */
+/*   Updated: 2022/06/30 10:20:13 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <stdio.h>
+
+void	*ft_memset(void *b, int c, size_t len)
+{
+	size_t			i;
+	unsigned char	*d;
+
+	i = 0;
+	d = b;
+	while (i < len)
+	{
+		d[i] = (unsigned char)c;
+		i++;
+	}
+	return (b);
+}
 
 char	*append_line(char *buffer, char *line)
 {
@@ -73,7 +88,7 @@ char	*break_multi_lines(char *line, char *extra, int position)
 	int		i;
 
 	i = 0;
-	new_line = malloc(sizeof(char) * (ft_strlen(line) - position + 2));
+	new_line = malloc(sizeof(char) * (position + 1));
 	while (i <= position)
 	{
 		new_line[i] = line[i];
@@ -81,7 +96,7 @@ char	*break_multi_lines(char *line, char *extra, int position)
 	}
 	new_line[i] = '\0';
 	i = 0;
-	while (i <= (ft_strlen(line) - position))
+	while (i < (ft_strlen(line) - position))
 	{
 		extra[i] = line[position + 1 + i];
 		i++;
@@ -98,7 +113,7 @@ char	*get_next_line(int fd)
 	char		*line;
 	static char	extra[BUFFER_SIZE + 1];
 
-	buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buffer)
 		return (NULL);
 	line = cpy_and_erase_src(extra);
@@ -107,7 +122,13 @@ char	*get_next_line(int fd)
 	{
 		if (ft_strchr(line, '\n') != -1)
 			return (break_multi_lines(line, extra, ft_strchr(line, '\n')));
-		read_count = read(fd, buffer, BUFFER_SIZE + 1);
+		ft_memset(buffer, 0, BUFFER_SIZE + 1);
+		read_count = read(fd, buffer, BUFFER_SIZE);
+		if (read_count == -1)
+		{
+			free(buffer);
+			return (NULL);
+		}
 		if (ft_strchr(buffer, '\n') != -1)
 			return (break_line(buffer, line, extra, ft_strchr(buffer, '\n')));
 		else
