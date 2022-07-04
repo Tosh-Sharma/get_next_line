@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 18:39:49 by tsharma           #+#    #+#             */
-/*   Updated: 2022/06/29 13:12:20 by tsharma          ###   ########.fr       */
+/*   Updated: 2022/07/04 16:55:24 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,43 +35,53 @@ int	ft_strchr(const char *s, int c)
 	return (-1);
 }
 
-static char	*joiner(char const *s1, char const *s2)
+static char	*joiner(char const *line, char const *buffer)
 {
 	int		total_size;
 	char	*res;
 	int		i;
 	int		j;
 
-	total_size = ft_strlen(s1) + ft_strlen(s2) + 1;
+	total_size = ft_strlen(line) + ft_strlen(buffer) + 1;
 	res = (char *)malloc(sizeof(char) * total_size);
 	if (!res)
 		return (NULL);
 	i = 0;
 	j = 0;
-	while (i < ft_strlen(s1))
+	while (i < ft_strlen(line))
 	{
-		res[i] = s1[i];
+		res[i] = line[i];
 		i++;
 	}
-	while (j < ft_strlen(s2))
+	while (j < ft_strlen(buffer))
 	{
-		res[i + j] = s2[j];
+		res[i + j] = buffer[j];
 		j++;
 	}
 	res[i + j] = '\0';
 	return (res);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin_and_free(char const *line, char const *buffer)
 {
-	if (s1 == NULL && s2 == NULL)
+	char	*new_line;
+
+	if (line == NULL && buffer == NULL)
 		return (NULL);
-	if (s1 == NULL)
-		return (ft_strdup((char *)s2));
-	else if (s2 == NULL)
-		return (ft_strdup((char *)s1));
+	if (line == NULL)
+		return (ft_strdup((char *)buffer));
+	else if (buffer == NULL)
+	{
+		new_line = ft_strdup((char *)line);
+		free((void *)line);
+		return (new_line);
+	}
 	else
-		return (joiner(s1, s2));
+	{
+		new_line = joiner(line, buffer);
+		free((void *)line);
+		return (new_line);
+	}
 }
 
 char	*ft_strdup(char *src)
