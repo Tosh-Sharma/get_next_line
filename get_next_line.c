@@ -6,27 +6,12 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 12:48:58 by tsharma           #+#    #+#             */
-/*   Updated: 2022/07/04 19:29:51 by tsharma          ###   ########.fr       */
+/*   Updated: 2022/07/05 17:32:33 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <stdio.h>
-
-void	*ft_memset(void *b, int c, size_t len)
-{
-	size_t			i;
-	unsigned char	*d;
-
-	i = 0;
-	d = b;
-	while (i < len)
-	{
-		d[i] = (unsigned char)c;
-		i++;
-	}
-	return (b);
-}
 
 char	*cpy_and_reset_src(char *src)
 {
@@ -43,42 +28,33 @@ char	*cpy_and_reset_src(char *src)
 		i++;
 	}
 	res[i] = '\0';
-	ft_memset(src, 0, BUFFER_SIZE + 1);
+	src[0] = '\0';
 	return (res);
 }
 
-//	Line can be null. Buffer can also be null 
-char	*break_line(char *line, char *extra, char *buffer, int position)
+char	*break_line(char *line, char *extra, int position)
 {
 	int		i;
-	char	temp[BUFFER_SIZE + 1];
-	char	*res;
+	int		length;
+	char	*temp;
 
 	i = 0;
+	temp = ft_calloc(position + 2, sizeof(char));
 	while (i <= position)
 	{
-		if (buffer != NULL)
-			temp[i] = buffer[i];
-		else
-			temp[i] = line[i];
+		temp[i] = line[i];
 		i++;
 	}
 	temp[i] = '\0';
-	if (line != NULL)
-		res = ft_strjoin_and_free(line, temp);
-	else
-		res = ft_strdup(temp);
 	i = 0;
-	while (i <= BUFFER_SIZE)
+	length = ft_strlen(line);
+	while (i < length - position)
 	{
-		if (buffer != NULL)
-			extra[i] = buffer[position + i];
-		else
-			extra[i] = line[position + i];
+		extra[i] = line[position + 1 + i];
 		i++;
 	}
 	extra[i] = '\0';
-	return (res);
+	return (temp);
 }
 
 char	*get_next_line(int fd)
@@ -90,16 +66,13 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE < 1)
 		return (NULL);
-	buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (!buffer)
-		return (NULL);
 	line = cpy_and_reset_src(extra);
 	read_count = 1;
-	while (read_count > 0 || ft_strchr(extra, '\n') != -1)
+	while (read_count > 0 || ft_strchr(line, '\n') != -1)
 	{
 		if (ft_strchr(line, '\n') != -1)
-			return (break_line(line, extra, NULL, ft_strchr(line, '\n')));
-		ft_memset(buffer, 0, BUFFER_SIZE + 1);
+			return (break_line(line, extra, ft_strchr(line, '\n')));
+		buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 		read_count = read(fd, buffer, BUFFER_SIZE);
 		if (read_count == -1)
 		{
@@ -107,7 +80,10 @@ char	*get_next_line(int fd)
 			return (NULL);
 		}
 		if (ft_strchr(buffer, '\n') != -1)
-			return (break_line(line, extra, buffer, ft_strchr(buffer, '\n')));
+		{
+			line = ft_strjoin_and_free(line, buffer);
+			return (break_line(line, extra, ft_strchr(line, '\n')));
+		}
 		else
 			line = ft_strjoin_and_free(line, buffer);
 	}

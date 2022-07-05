@@ -6,110 +6,100 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 18:39:49 by tsharma           #+#    #+#             */
-/*   Updated: 2022/07/04 16:55:24 by tsharma          ###   ########.fr       */
+/*   Updated: 2022/07/05 17:15:42 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <stdio.h>
 
 int	ft_strchr(const char *s, int c)
 {
 	int		i;
-	char	*res;
 
 	i = 0;
 	while (s[i] != '\0')
 	{
 		if (s[i] == (char)c)
-		{
-			res = (char *)&s[i];
 			return (i);
-		}
 		i++;
 	}
 	if (s[i] == (char)c)
-	{
-		res = (char *)&s[i];
 		return (i);
-	}
 	return (-1);
 }
 
-static char	*joiner(char const *line, char const *buffer)
+static char	*join_strings(char const *s1,
+	char const *s2, char *res, int s1_len)
 {
-	int		total_size;
-	char	*res;
 	int		i;
-	int		j;
+	int		s2_len;
 
-	total_size = ft_strlen(line) + ft_strlen(buffer) + 1;
-	res = (char *)malloc(sizeof(char) * total_size);
-	if (!res)
-		return (NULL);
 	i = 0;
-	j = 0;
-	while (i < ft_strlen(line))
+	s2_len = ft_strlen(s2);
+	if (s1 != NULL)
 	{
-		res[i] = line[i];
-		i++;
+		while (i < s1_len)
+		{
+			res[i] = s1[i];
+			i++;
+		}
 	}
-	while (j < ft_strlen(buffer))
+	i = 0;
+	if (s2 != NULL)
 	{
-		res[i + j] = buffer[j];
-		j++;
+		while (i < s2_len)
+		{
+			res[s1_len + i] = s2[i];
+			i++;
+		}
 	}
-	res[i + j] = '\0';
+	res[s1_len + i] = '\0';
 	return (res);
 }
 
-char	*ft_strjoin_and_free(char const *line, char const *buffer)
+char	*ft_strjoin_and_free(char const *s1, char const *s2)
 {
-	char	*new_line;
+	int		s1_len;
+	int		s2_len;
+	char	*res;
 
-	if (line == NULL && buffer == NULL)
+	s1_len = ft_strlen(s1);
+	s2_len = ft_strlen(s2);
+	res = (char *)malloc(sizeof(char) * (s1_len + s2_len + 1));
+	if (!res)
 		return (NULL);
-	if (line == NULL)
-		return (ft_strdup((char *)buffer));
-	else if (buffer == NULL)
-	{
-		new_line = ft_strdup((char *)line);
-		free((void *)line);
-		return (new_line);
-	}
-	else
-	{
-		new_line = joiner(line, buffer);
-		free((void *)line);
-		return (new_line);
-	}
-}
-
-char	*ft_strdup(char *src)
-{
-	char	*dest;
-	int		len;
-	int		i;
-
-	i = 0;
-	len = ft_strlen(src);
-	dest = malloc(sizeof(char) * (len + 1));
-	if (!dest)
-		return (NULL);
-	while (src[i] != '\0')
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	dest[i] = '\0';
-	return (dest);
+	res = join_strings(s1, s2, res, s1_len);
+	free((void *)s1);
+	free((void *)s2);
+	return (res);
 }
 
 int	ft_strlen(const char *s)
 {
 	int	i;
 
+	if (s == NULL)
+		return (0);
 	i = 0;
 	while (s[i] != '\0')
 		i++;
 	return (i);
+}
+
+char	*ft_calloc(int count, int size)
+{
+	char	*res;
+	int		i;
+
+	res = (char *)malloc(count * size);
+	if (!res)
+		return (NULL);
+	i = 0;
+	while (i < count)
+	{
+		res[i] = 0;
+		i++;
+	}
+	return (res);
 }
