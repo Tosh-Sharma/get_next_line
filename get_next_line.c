@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 12:48:58 by tsharma           #+#    #+#             */
-/*   Updated: 2022/07/05 17:32:33 by tsharma          ###   ########.fr       */
+/*   Updated: 2022/07/05 18:39:08 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,10 @@ char	*get_next_line(int fd)
 			return (break_line(line, extra, ft_strchr(line, '\n')));
 		buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 		read_count = read(fd, buffer, BUFFER_SIZE);
-		if (read_count == -1)
+		if (read_count == 0)
 		{
 			free(buffer);
-			return (NULL);
+			return (line);
 		}
 		if (ft_strchr(buffer, '\n') != -1)
 		{
