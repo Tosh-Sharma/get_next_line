@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 12:48:58 by tsharma           #+#    #+#             */
-/*   Updated: 2022/07/05 18:39:08 by tsharma          ###   ########.fr       */
+/*   Updated: 2022/07/06 15:26:29 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,19 +54,26 @@ char	*break_line(char *line, char *extra, int position)
 		i++;
 	}
 	extra[i] = '\0';
+	free(line);
 	return (temp);
 }
 
-char	*get_next_line(int fd)
+char	*handle_end(char *buffer, char *line)
 {
-	int			read_count;
-	char		*line;
-	char		*buffer;
-	static char	extra[BUFFER_SIZE + 1];
-
-	if (fd < 0 || BUFFER_SIZE < 1)
+	free(buffer);
+	if (ft_strlen(line) > 0)
+		return (line);
+	else
+	{
+		free(line);
 		return (NULL);
-	line = cpy_and_reset_src(extra);
+	}
+}
+
+char	*handle_read(char *line, char *buffer, char *extra, int fd)
+{
+	int	read_count;
+
 	read_count = 1;
 	while (read_count > 0 || ft_strchr(line, '\n') != -1)
 	{
@@ -75,10 +82,7 @@ char	*get_next_line(int fd)
 		buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 		read_count = read(fd, buffer, BUFFER_SIZE);
 		if (read_count == 0)
-		{
-			free(buffer);
-			return (line);
-		}
+			return (handle_end(buffer, line));
 		if (ft_strchr(buffer, '\n') != -1)
 		{
 			line = ft_strjoin_and_free(line, buffer);
@@ -87,5 +91,18 @@ char	*get_next_line(int fd)
 		else
 			line = ft_strjoin_and_free(line, buffer);
 	}
-	return (line);
+	return (NULL);
+}
+
+char	*get_next_line(int fd)
+{
+	char		*line;
+	char		*buffer;
+	static char	extra[BUFFER_SIZE + 1];
+
+	if (fd < 0 || BUFFER_SIZE < 1 || read(fd, 0, 0) < 0)
+		return (NULL);
+	buffer = NULL;
+	line = cpy_and_reset_src(extra);
+	return (handle_read(line, buffer, extra, fd));
 }
