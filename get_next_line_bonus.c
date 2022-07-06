@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 17:44:23 by tsharma           #+#    #+#             */
-/*   Updated: 2022/07/06 17:44:44 by tsharma          ###   ########.fr       */
+/*   Updated: 2022/07/06 17:52:25 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,11 +97,11 @@ char	*get_next_line(int fd)
 {
 	char		*line;
 	char		*buffer;
-	static char	extra[BUFFER_SIZE + 1];
+	static char	extra[BUFFER_SIZE + 1][256];
 
 	if (fd < 0 || BUFFER_SIZE < 1 || read(fd, 0, 0) < 0)
 		return (NULL);
 	buffer = NULL;
-	line = cpy_and_reset_src(extra);
-	return (handle_read(line, buffer, extra, fd));
+	line = cpy_and_reset_src(extra[fd]);
+	return (handle_read(line, buffer, extra[fd], fd));
 }
